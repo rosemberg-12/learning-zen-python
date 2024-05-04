@@ -53,3 +53,72 @@ def palindrome_check(word: WordToCheck) -> bool:
 
 print(palindrome_check(word="Ana"))
 print(palindrome_check(word="BBWA"))
+
+
+# Flat is better than nested.
+
+import dataclasses
+from typing import Optional
+
+
+@dataclasses.dataclass
+class UserInput:
+    name: Optional[str]
+    last_name: Optional[str]
+    cellphone: Optional[str]
+
+
+def print_user_input_data_flat(user_input: UserInput) -> None:
+    if user_input.name is None or len(user_input.name) < 3:
+        print(f"The provided name {user_input.name} is not valid")
+        return
+
+    if user_input.last_name is None or len(user_input.last_name) < 4:
+        print(f"The provided last_name {user_input.last_name} is not valid")
+        return
+
+    if user_input.cellphone is None or not user_input.cellphone.isnumeric():
+        print(f"The provided last_name {user_input.last_name} is not valid")
+        return
+
+    print(
+        f"The user input is {user_input.name} {user_input.last_name} {user_input.cellphone}"
+    )
+
+
+def print_user_input_data_nested(user_input: UserInput) -> None:
+    if user_input.name is not None and len(user_input.name) >= 3:
+        if user_input.last_name is not None and len(user_input.last_name) >= 4:
+            if user_input.cellphone is not None and user_input.cellphone.isnumeric():
+                print(
+                    f"The user input is {user_input.name} {user_input.last_name} {user_input.cellphone}"
+                )
+            else:
+                print(f"The provided last_name {user_input.last_name} is not valid")
+                return
+        else:
+            print(f"The provided last_name {user_input.last_name} is not valid")
+            return
+    else:
+        print(f"The provided name {user_input.name} is not valid")
+        return
+
+
+user_input: UserInput = UserInput(
+    name="Rosemberg", last_name="Porras", cellphone="3215478569"
+)
+print_user_input_data_flat(user_input=user_input)
+print_user_input_data_nested(user_input=user_input)
+
+# Sparse is better than dense.
+
+user_input: UserInput = UserInput(
+    name="Rosemberg Sparse", last_name="Porras", cellphone="3215478569"
+)
+print_user_input_data_flat(user_input=user_input)
+
+print_user_input_data_nested(
+    user_input=UserInput(
+        name="Rosemberg dense", last_name="Porras", cellphone="3215478569"
+    )
+)
